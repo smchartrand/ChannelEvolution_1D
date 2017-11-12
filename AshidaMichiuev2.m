@@ -1,4 +1,4 @@
-function [ Qbe ] = AshidaMichiuev2( Nn,Gl,Fix,Dgx,Ushear,GSm  )
+function [ Qbe,PBKtranspose ] = AshidaMichiuev2( Nn,Gl,Fix,Dgx,Ushear,GSm )
 
     %% ASHIDA AND MICHIUE FUNCTION COMPUTES BEDLOAD TRANSPORT
     % This module computes fractional bedload transport using the Ashida-
@@ -66,12 +66,10 @@ function [ Qbe ] = AshidaMichiuev2( Nn,Gl,Fix,Dgx,Ushear,GSm  )
         % Compute the fractional bedload transport by grain class -
         % dimensional - square meters per second
         qbstark = 17 .* (tstarrk - tstarrkc) .* (tstarrk .^ 0.5 - tstarrkc .^ 0.5);
-        %qbstark(1,Fipass1) = 17 .* (tstarrk(Fipass1) - tstarrkc(Fipass1)) .* (tstarrk(Fipass1) .^ 0.5 - tstarrkc(Fipass1) .^ 0.5);
         
         % Compute the dimensional sediment transport by grain class (square
         % meters pers second)
-        qbk = qbstark .* ((Rd .* g .* GSm(k)) .^ 0.5 .* GSm(k) .* Fipass);
-        %qbk = qbstark(1,Fipass1) .* ((Rd .* g .* Dipass(Fipass1)) .^ 0.5 .* Dipass(Fipass1) .* Fipass(Fipass1));
+        qbk = (qbstark(k) .* (Ushearpass^3) .* Fipass(k)) ./ (Rd .* g);
 
         % Compute the total sediment transport for a specific node - 
         % dimensional - square meters per second
